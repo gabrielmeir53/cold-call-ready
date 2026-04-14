@@ -31,23 +31,17 @@ The fastest way to use cold-call-ready is with an AI assistant like Claude. You 
 pip install reportlab
 ```
 
-### Step 2: Set up your font
+### Step 2: Font (usually automatic)
 
-cold-call-ready uses Palatino. Tell your system where to find it:
+cold-call-ready auto-detects Palatino on your system. **On macOS, it just works** -- Palatino ships at `/System/Library/Fonts/Palatino.ttc`.
 
-**macOS** (ships with the system):
+If Palatino isn't found, it falls back to **Times** (built into ReportLab) automatically with a warning. Your notes will still look good -- just not quite as polished.
+
+To override the auto-detection or point to a custom font:
+
 ```bash
-export NOTE_GEN_FONT_PATH="/System/Library/Fonts/Palatino.ttc"
-```
-
-**Linux:**
-```bash
-export NOTE_GEN_FONT_PATH="/usr/share/fonts/truetype/Palatino.ttc"
-```
-
-**Windows:**
-```powershell
-$env:NOTE_GEN_FONT_PATH = "C:\Windows\Fonts\pala.ttf"
+# Optional -- only needed if auto-detection fails or you want a different path
+export NOTE_GEN_FONT_PATH="/path/to/Palatino.ttc"
 ```
 
 ### Step 3: Upload your reading to Claude

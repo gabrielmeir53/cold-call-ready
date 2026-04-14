@@ -88,8 +88,8 @@ H. Confidence Scores
 Generate a Python script using ReportLab that produces a PDF with these specifications:
 
 Font & Typography:
-- Use Palatino font from: [/path/to/your/Palatino.ttc]
-  (on macOS: /System/Library/Fonts/Palatino.ttc)
+- Use Palatino font. The note_generator library auto-detects it on macOS/Linux/Windows.
+  If auto-detection fails, pass the path explicitly or fall back to Times (built into ReportLab).
 - Register all Palatino variants (regular, bold, italic, bold-italic) with subfont indices.
 - Body text: 11pt. Section headers: 14-16pt bold. Sub-headers: 12pt bold.
 - Case names in italic wherever they appear in running text.

@@ -29,6 +29,7 @@ Usage:
 """
 
 import os
+import platform
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
 from reportlab.lib.colors import HexColor, white, black
@@ -47,13 +48,58 @@ from reportlab.pdfbase.pdfmetrics import registerFontFamily
 #  CONFIGURATION
 # ══════════════════════════════════════════════════════════════════════
 
-# Default font path -- override via NoteBuilder(..., font_path="...") or by
-# setting this module-level variable before constructing a NoteBuilder.
-DEFAULT_FONT_PATH = os.environ.get("NOTE_GEN_FONT_PATH", None)
-# Set this to your Palatino.ttc path, e.g.:
+def _detect_font_path():
+    """Auto-detect Palatino font location, falling back to Times if unavailable.
+
+    Search order:
+      1. NOTE_GEN_FONT_PATH environment variable
+      2. macOS system fonts (/System/Library/Fonts/Palatino.ttc)
+      3. macOS supplemental fonts (/Library/Fonts/Palatino.ttc)
+      4. Linux common locations
+      5. Windows common locations
+      6. None -- will fall back to Times (ReportLab built-in) at registration time
+    """
+    env = os.environ.get("NOTE_GEN_FONT_PATH")
+    if env and os.path.isfile(env):
+        return env
+
+    candidates = []
+    system = platform.system()
+
+    if system == "Darwin":
+        candidates = [
+            "/System/Library/Fonts/Palatino.ttc",
+            "/Library/Fonts/Palatino.ttc",
+            os.path.expanduser("~/Library/Fonts/Palatino.ttc"),
+        ]
+    elif system == "Linux":
+        candidates = [
+            "/usr/share/fonts/truetype/Palatino.ttc",
+            "/usr/share/fonts/opentype/Palatino.ttc",
+            "/usr/local/share/fonts/Palatino.ttc",
+            os.path.expanduser("~/.fonts/Palatino.ttc"),
+            os.path.expanduser("~/.local/share/fonts/Palatino.ttc"),
+        ]
+    elif system == "Windows":
+        windir = os.environ.get("WINDIR", r"C:\Windows")
+        candidates = [
+            os.path.join(windir, "Fonts", "pala.ttf"),
+            os.path.join(windir, "Fonts", "Palatino.ttc"),
+            os.path.join(windir, "Fonts", "palatino.ttf"),
+        ]
+
+    for path in candidates:
+        if os.path.isfile(path):
+            return path
+
+    return None
+
+
+DEFAULT_FONT_PATH = _detect_font_path()
+# Palatino is auto-detected. To override, either:
 #   export NOTE_GEN_FONT_PATH="/path/to/Palatino.ttc"
 # Or pass font_path="..." to NoteBuilder() directly.
-# On macOS, Palatino is typically at /System/Library/Fonts/Palatino.ttc
+# If Palatino is not found, Times (ReportLab built-in) is used as fallback.
 
 # ── COLORS ──
 NAVY       = HexColor("#1B2A4A")
@@ -79,28 +125,67 @@ CONTENT_W = PAGE_W - 2 * MARGIN
 # ══════════════════════════════════════════════════════════════════════
 
 _fonts_registered = False
+_using_fallback = False
 
 
 def _register_fonts(font_path):
-    """Register the Palatino font family from a .ttc collection file.
+    """Register the Palatino font family, falling back to Times if unavailable.
 
-    Indices: 0=Roman, 1=Italic, 2=Bold, 3=BoldItalic.
-    This is idempotent -- calling it multiple times with the same path is safe.
+    When a .ttc file is provided, registers subfont indices 0-3 (Roman, Italic,
+    Bold, BoldItalic). When a single .ttf is provided, registers only the
+    regular weight and maps bold/italic to it.
+
+    If font_path is None, falls back to Times-Roman (built into ReportLab) and
+    registers aliases so all 'Palatino' references in styles resolve correctly.
     """
-    global _fonts_registered
+    global _fonts_registered, _using_fallback
     if _fonts_registered:
         return
-    pdfmetrics.registerFont(TTFont("Palatino",            font_path, subfontIndex=0))
-    pdfmetrics.registerFont(TTFont("Palatino-Italic",     font_path, subfontIndex=1))
-    pdfmetrics.registerFont(TTFont("Palatino-Bold",       font_path, subfontIndex=2))
-    pdfmetrics.registerFont(TTFont("Palatino-BoldItalic", font_path, subfontIndex=3))
-    registerFontFamily(
-        "Palatino",
-        normal="Palatino",
-        bold="Palatino-Bold",
-        italic="Palatino-Italic",
-        boldItalic="Palatino-BoldItalic",
-    )
+
+    if font_path and os.path.isfile(font_path):
+        ext = os.path.splitext(font_path)[1].lower()
+        if ext == ".ttc":
+            pdfmetrics.registerFont(TTFont("Palatino",            font_path, subfontIndex=0))
+            pdfmetrics.registerFont(TTFont("Palatino-Italic",     font_path, subfontIndex=1))
+            pdfmetrics.registerFont(TTFont("Palatino-Bold",       font_path, subfontIndex=2))
+            pdfmetrics.registerFont(TTFont("Palatino-BoldItalic", font_path, subfontIndex=3))
+        else:
+            # Single .ttf -- register as regular, map variants to it
+            pdfmetrics.registerFont(TTFont("Palatino", font_path))
+            pdfmetrics.registerFont(TTFont("Palatino-Italic", font_path))
+            pdfmetrics.registerFont(TTFont("Palatino-Bold", font_path))
+            pdfmetrics.registerFont(TTFont("Palatino-BoldItalic", font_path))
+        registerFontFamily(
+            "Palatino",
+            normal="Palatino",
+            bold="Palatino-Bold",
+            italic="Palatino-Italic",
+            boldItalic="Palatino-BoldItalic",
+        )
+    else:
+        # Fallback: alias Times-Roman (built into ReportLab) as "Palatino"
+        _using_fallback = True
+        from reportlab.pdfbase.pdfmetrics import registerFontFamily as rff
+        # Times is always available in ReportLab -- register aliases
+        for alias, real in [
+            ("Palatino",            "Times-Roman"),
+            ("Palatino-Italic",     "Times-Italic"),
+            ("Palatino-Bold",       "Times-Bold"),
+            ("Palatino-BoldItalic", "Times-BoldItalic"),
+        ]:
+            pdfmetrics.registerFont(pdfmetrics.getFont(real))
+            # Create an alias by registering the same font object under a new name
+            pdfmetrics._fonts[alias] = pdfmetrics._fonts[real]
+        rff("Palatino", normal="Times-Roman", bold="Times-Bold",
+            italic="Times-Italic", boldItalic="Times-BoldItalic")
+        import warnings
+        warnings.warn(
+            "Palatino font not found -- using Times as fallback. "
+            "Set NOTE_GEN_FONT_PATH or pass font_path to NoteBuilder() "
+            "for Palatino typography.",
+            stacklevel=2,
+        )
+
     _fonts_registered = True
 
 
