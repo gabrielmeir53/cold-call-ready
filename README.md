@@ -2,7 +2,7 @@
 
 **Beautiful, bookmarked PDF class notes with one Python script.**
 
-A ReportLab-based toolkit for generating polished, color-coded study guides with case briefs, cold-call Q&A boxes, problem answers, rule text, and confidence scores -- all in Palatino on letter-sized pages with PDF bookmarks.
+Upload your casebook pages to Claude, paste a prompt, and get a polished, color-coded study guide with case briefs, cold-call Q&A boxes, problem answers, rule text, and confidence scores -- all in Palatino on letter-sized pages with PDF bookmarks.
 
 Built for law school, works for any class.
 
@@ -21,34 +21,27 @@ Built for law school, works for any class.
 
 ---
 
-## Quick Start (Step by Step)
+## Quick Start: AI Workflow (Recommended)
 
-### Step 1: Install
+The fastest way to use cold-call-ready is with an AI assistant like Claude. You don't need to write any code yourself.
+
+### Step 1: Install the dependency
 
 ```bash
 pip install reportlab
 ```
 
-Or clone this repo and install from requirements:
-
-```bash
-git clone https://github.com/gabrielmeir53/cold-call-ready.git
-cd cold-call-ready
-pip install -r requirements.txt
-```
-
 ### Step 2: Set up your font
 
-cold-call-ready uses Palatino. Set the path as an environment variable or pass it directly.
+cold-call-ready uses Palatino. Tell your system where to find it:
 
-**macOS** (Palatino ships with the system):
+**macOS** (ships with the system):
 ```bash
 export NOTE_GEN_FONT_PATH="/System/Library/Fonts/Palatino.ttc"
 ```
 
-**Linux** (install Palatino or use another `.ttc`/`.ttf`):
+**Linux:**
 ```bash
-# Install via your package manager or download, then:
 export NOTE_GEN_FONT_PATH="/usr/share/fonts/truetype/Palatino.ttc"
 ```
 
@@ -57,14 +50,52 @@ export NOTE_GEN_FONT_PATH="/usr/share/fonts/truetype/Palatino.ttc"
 $env:NOTE_GEN_FONT_PATH = "C:\Windows\Fonts\pala.ttf"
 ```
 
-Or skip the env var and pass the path directly in your script:
-```python
-nb = NoteBuilder(..., font_path="/path/to/Palatino.ttc")
-```
+### Step 3: Upload your reading to Claude
 
-### Step 3: Write your script
+Open [Claude](https://claude.ai) (or Claude Code) and attach the PDF or DOCX of your casebook reading.
 
-Create a file (e.g., `my_notes.py`):
+### Step 4: Paste the prompt
+
+Copy the **Master Prompt** from [`PROMPT_TEMPLATE.md`](PROMPT_TEMPLATE.md) into the chat. Fill in the placeholders:
+
+| Placeholder | What to put | Example |
+|---|---|---|
+| `[CLASS NAME]` | Your course name | `Evidence` |
+| `[PAGES/FILE DESCRIPTION]` | What the reading covers | `pp. 747-755 of the casebook` |
+| `[PALATINO FONT PATH]` | Your font path from Step 2 | `/System/Library/Fonts/Palatino.ttc` |
+| `[CLASS-SPECIFIC INSTRUCTIONS]` | Optional -- copy a block from the bottom of `PROMPT_TEMPLATE.md` | *(see below)* |
+
+Pre-built class-specific instruction blocks are included for:
+
+| Class | Key emphasis |
+|---|---|
+| **Evidence** | Problems first, admissibility verdicts with FRE subsections, amendment tracking |
+| **Immigration Law** | Step-by-step walkthroughs, all visa types/INA sections, doctrinal timelines |
+| **Internet Law** | Full case summaries with judge names, dissents at full depth, policy Qs |
+| **Wills, Trusts & Estates** | Heavy charts/diagrams, financial data tables, statutory cross-references |
+
+You can also write your own block for any class using the **Custom / Other Classes** template at the bottom of `PROMPT_TEMPLATE.md`.
+
+### Step 5: Run it
+
+Claude will generate a Python script. Say **"Run it."** (In Claude Code, it runs automatically.) The PDF appears in your working directory.
+
+### Step 6: Review
+
+Open the PDF and check:
+- [ ] Every case has a full brief with cold-call points
+- [ ] Every problem/question is answered with talking points
+- [ ] Bookmarks work in the PDF sidebar
+- [ ] No content is split across pages
+- [ ] Confidence score is at the end
+
+---
+
+## Manual Usage: Build a PDF Yourself
+
+If you prefer to write the script by hand (or want to customize beyond what the AI generates), use the `NoteBuilder` API directly.
+
+### Example
 
 ```python
 from note_generator import NoteBuilder
@@ -103,77 +134,30 @@ nb.add_case_brief(
 
 nb.add_cold_call("COLD-CALL POINTS -- Crawford", [
     ("What did Crawford change?", [
-        "Replaced the Roberts reliability test with a bright-line rule: testimonial statements require prior cross-examination.",
-        "Shifted the focus from judicial reliability assessments to the original constitutional guarantee.",
-    ]),
-    ("What counts as 'testimonial'?", [
-        "Statements made during police interrogation, affidavits, prior testimony, and similar formal declarations.",
-        "The Court left the precise boundaries for future cases.",
+        "Replaced the Roberts reliability test with a bright-line rule.",
     ]),
 ])
 
 nb.add_problem("8.1", "The Neighbor's Account",
-    "A neighbor told police she saw the defendant leave the house carrying a bag. "
-    "The neighbor is now unavailable. The prosecution wants to introduce her statement.",
-    "Is the neighbor's statement admissible under the Confrontation Clause after Crawford?",
+    "A neighbor told police she saw the defendant leave the house carrying a bag.",
+    "Is the neighbor's statement admissible after Crawford?",
     [
-        "NO -- this is a testimonial statement (made during police interrogation).",
-        "Under Crawford, testimonial hearsay requires that the declarant be unavailable AND that the defendant had a prior opportunity to cross-examine.",
-        "Here, even though the declarant is unavailable, there was no prior cross-examination.",
-        "The statement must be excluded regardless of its reliability.",
+        "NO -- testimonial statement, no prior cross-examination.",
+        "Must be excluded regardless of reliability.",
     ]
 )
 
 nb.add_confidence_score([
-    ["Crawford", "95%", "Strong coverage of the holding and reasoning."],
-    ["Problem 8.1", "92%", "Clear application of the Crawford rule."],
-    ["OVERALL", "93%", "Review the forfeiture-by-wrongdoing exception."],
+    ["Crawford", "95%", "Strong coverage."],
+    ["OVERALL", "93%", "Review forfeiture-by-wrongdoing."],
 ])
 
 nb.build()
 ```
 
-### Step 4: Run it
-
 ```bash
 python my_notes.py
 ```
-
-### Step 5: Review
-
-Open `my_notes.pdf` and check:
-- [ ] Every case has a full brief with cold-call points
-- [ ] Every problem is answered with talking points
-- [ ] Bookmarks work in the PDF sidebar
-- [ ] No content is split across pages
-- [ ] Confidence score is at the end
-
----
-
-## AI-Powered Workflow
-
-The included [`PROMPT_TEMPLATE.md`](PROMPT_TEMPLATE.md) is a universal prompt you can paste into Claude (or any LLM) alongside your reading materials. It instructs the AI to:
-
-1. Read all problems first, then cases, then answer problems
-2. Generate detailed case summaries with cold-call talking points
-3. Output a Python script using this library that produces a print-ready PDF
-
-**How to use it:**
-
-1. Upload your casebook pages (PDF or DOCX) to Claude
-2. Copy the Master Prompt from `PROMPT_TEMPLATE.md`
-3. Fill in the `[BRACKETED PLACEHOLDERS]` (class name, pages, font path)
-4. Optionally paste a class-specific instruction block (Evidence, Immigration Law, Internet Law, WTE, or write your own)
-5. Send the prompt and say **"Run it."**
-
-Pre-built class-specific instruction blocks are included for:
-
-| Class | Key emphasis |
-|---|---|
-| **Evidence** | Problems first, admissibility verdicts with FRE subsections, amendment tracking |
-| **Immigration Law** | Step-by-step walkthroughs, all visa types/INA sections, doctrinal timelines |
-| **Internet Law** | Full case summaries with judge names, dissents at full depth, policy Qs |
-| **Wills, Trusts & Estates** | Heavy charts/diagrams, financial data tables, statutory cross-references |
 
 ---
 
@@ -192,7 +176,7 @@ Pre-built class-specific instruction blocks are included for:
 | `.add_table(headers, rows, col_widths=None)` | Colored info table |
 | `.add_rule_box(rule_title, rule_text_parts)` | Styled rule/statute box |
 | `.add_info_box(title, text)` | Bordered info box |
-| `.add_confidence_score(rows)` | Confidence score table; `rows` = list of `[component, score, notes]` |
+| `.add_confidence_score(rows)` | Confidence score table; `rows` = `[component, score, notes]` |
 | `.add_page_break()` | Insert page break |
 | `.add_spacer(height=6)` | Vertical spacer |
 | `.build()` | Build the PDF with bookmarks; returns output path |
