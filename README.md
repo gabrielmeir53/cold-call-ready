@@ -1,95 +1,120 @@
 # cold-call-ready
 
-**Beautiful, bookmarked PDF class notes with one Python script.**
+**Never get caught flat-footed in class again.**
 
-Upload your casebook pages to Claude, paste a prompt, and get a polished, color-coded study guide with case briefs, cold-call Q&A boxes, problem answers, rule text, and confidence scores -- all in Palatino on letter-sized pages with PDF bookmarks.
+Upload your casebook reading to Claude. Paste a prompt. Get a polished, color-coded PDF with every case briefed, every problem answered, and cold-call Q&A boxes telling you exactly what to say when the professor points at you.
 
-Built for law school, works for any class.
-
-## Features
-
-- **Case Brief Boxes** -- structured briefs with posture, facts, holding, reasoning
-- **Cold-Call Q&A** -- italic questions with bullet-point answers, ready to recite
-- **Problem Boxes** -- restate the facts, state the question, deliver the answer
-- **Rule Boxes** -- styled containers for statutes, FRE rules, constitutional text
-- **Colored Tables** -- teal headers, alternating row shading, auto-width columns
-- **Section Headers** -- maroon (major) and teal (sub) headers with PDF bookmarks
-- **Header/Footer Bars** -- navy top bar with class/topic info, gray footer with page numbers
-- **Confidence Scores** -- rate your coverage section by section
-- **Palatino Typography** -- register all four variants (roman, italic, bold, bold-italic)
-- **No Page Splits** -- `KeepTogether` wraps every logical block
+No coding required. Built for law school.
 
 ---
 
-## Quick Start: AI Workflow (Recommended)
+## What You Get
 
-The fastest way to use cold-call-ready is with an AI assistant like Claude. You don't need to write any code yourself.
+A 20+ page PDF for each reading assignment with:
 
-### Step 1: Install the dependency
+- **Case briefs** -- facts, holding, reasoning, key quotes, all in a styled box
+- **Cold-call Q&A** -- "What did the court hold?" with bullet-point answers you can say out loud
+- **Problem answers** -- every textbook question answered with talking points
+- **Rule text** -- FRE rules, statutes, constitutional provisions in highlighted boxes
+- **Comparison tables** -- majority vs. dissent, old rule vs. new rule, element breakdowns
+- **Confidence score** -- tells you how well-covered you are section by section
+- **PDF bookmarks** -- jump to any case or section from the sidebar
+
+All in Palatino on letter-sized pages. Nothing splits awkwardly across pages.
+
+---
+
+## How to Use It
+
+### One-time setup (5 minutes)
+
+**1. Make sure you have Python.**
+
+On a Mac, open Terminal and type `python3 --version`. If you see a version number, you're good. If not, [install Python](https://www.python.org/downloads/).
+
+**2. Install one library.**
 
 ```bash
-pip install reportlab
+pip3 install reportlab
 ```
 
-### Step 2: Font (usually automatic)
-
-cold-call-ready auto-detects Palatino on your system. **On macOS, it just works** -- Palatino ships at `/System/Library/Fonts/Palatino.ttc`.
-
-If Palatino isn't found, it falls back to **Times** (built into ReportLab) automatically with a warning. Your notes will still look good -- just not quite as polished.
-
-To override the auto-detection or point to a custom font:
+**3. Download this repo.**
 
 ```bash
-# Optional -- only needed if auto-detection fails or you want a different path
-export NOTE_GEN_FONT_PATH="/path/to/Palatino.ttc"
+git clone https://github.com/gabrielmeir53/cold-call-ready.git
 ```
 
-### Step 3: Upload your reading to Claude
+That's it. The font (Palatino) is already on your Mac. On Windows or Linux it auto-detects or falls back to Times automatically.
 
-Open [Claude](https://claude.ai) (or Claude Code) and attach the PDF or DOCX of your casebook reading.
+---
 
-### Step 4: Paste the prompt
+### Before each class (~5 minutes)
 
-Copy the **Master Prompt** from [`PROMPT_TEMPLATE.md`](PROMPT_TEMPLATE.md) into the chat. Fill in the placeholders:
+**1. Open Claude** at [claude.ai](https://claude.ai).
 
-| Placeholder | What to put | Example |
-|---|---|---|
-| `[CLASS NAME]` | Your course name | `Evidence` |
-| `[PAGES/FILE DESCRIPTION]` | What the reading covers | `pp. 747-755 of the casebook` |
-| `[PALATINO FONT PATH]` | Your font path from Step 2 | `/System/Library/Fonts/Palatino.ttc` |
-| `[CLASS-SPECIFIC INSTRUCTIONS]` | Optional -- copy a block from the bottom of `PROMPT_TEMPLATE.md` | *(see below)* |
+**2. Upload your reading.** Attach the PDF of the casebook pages your professor assigned.
 
-Pre-built class-specific instruction blocks are included for:
+**3. Open `PROMPT_TEMPLATE.md`** from the repo you downloaded. Copy everything under **"Master Prompt"** (the big block inside the triple backticks).
 
-| Class | Key emphasis |
+**4. Paste it into Claude.** Replace three things:
+
+| Replace this | With this |
 |---|---|
-| **Evidence** | Problems first, admissibility verdicts with FRE subsections, amendment tracking |
-| **Immigration Law** | Step-by-step walkthroughs, all visa types/INA sections, doctrinal timelines |
-| **Internet Law** | Full case summaries with judge names, dissents at full depth, policy Qs |
-| **Wills, Trusts & Estates** | Heavy charts/diagrams, financial data tables, statutory cross-references |
+| `[CLASS NAME]` | Your course -- e.g., `Evidence` |
+| `[PAGES/FILE DESCRIPTION]` | What you uploaded -- e.g., `the attached PDF, pp. 747-755` |
+| `[CLASS-SPECIFIC INSTRUCTIONS]` | A block from the bottom of `PROMPT_TEMPLATE.md` for your class *(optional but recommended)* |
 
-You can also write your own block for any class using the **Custom / Other Classes** template at the bottom of `PROMPT_TEMPLATE.md`.
+Delete the `[PALATINO FONT PATH]` line entirely -- it auto-detects.
 
-### Step 5: Run it
+**5. Send it.** Claude reads your casebook pages, analyzes every case and problem, and writes a Python script that generates the PDF.
 
-Claude will generate a Python script. Say **"Run it."** (In Claude Code, it runs automatically.) The PDF appears in your working directory.
+**6. Say "Run it."** Claude runs the script. A PDF appears.
 
-### Step 6: Review
-
-Open the PDF and check:
-- [ ] Every case has a full brief with cold-call points
-- [ ] Every problem/question is answered with talking points
-- [ ] Bookmarks work in the PDF sidebar
-- [ ] No content is split across pages
-- [ ] Confidence score is at the end
+**7. Open the PDF.** You're ready for class.
 
 ---
 
-## Manual Usage: Build a PDF Yourself
+### Class-specific prompts
 
-If you prefer to write the script by hand (or want to customize beyond what the AI generates), use the `NoteBuilder` API directly.
+At the bottom of `PROMPT_TEMPLATE.md`, there are pre-built instruction blocks you can paste into `[CLASS-SPECIFIC INSTRUCTIONS]` to tailor the output:
 
-### Example
+| Class | What it adds |
+|---|---|
+| **Evidence** | Reads problems first, gives admissibility verdicts with FRE subsections, tracks 2000/2023 amendments |
+| **Immigration Law** | Step-by-step logical walkthroughs, covers all visa types and INA sections, builds doctrinal timelines |
+| **Internet Law** | Full case summaries with judge names, dissents at equal depth, policy-oriented cold-call questions |
+| **Wills, Trusts & Estates** | Extra charts and diagrams, financial data tables, UTC/UPIA/UPC cross-references |
+| **Custom** | Blank template with guiding questions to build your own |
+
+---
+
+## FAQ
+
+**Do I need to know Python?**
+No. Claude writes and runs the script for you. You just paste a prompt.
+
+**Does it work on Windows?**
+Yes. Python + ReportLab work on Windows. The font auto-detects Palatino if installed, otherwise falls back to Times.
+
+**Can I use it for non-law classes?**
+Yes. The components (case briefs, tables, Q&A boxes) work for any subject. Write your own class-specific instruction block.
+
+**What if I want to tweak the output?**
+You can ask Claude to adjust anything -- colors, layout, content. Or see the [API Reference](#api-reference) below to write scripts by hand.
+
+**How much does it cost?**
+This repo is free (MIT license). You need a Claude account to use the AI workflow.
+
+---
+
+## For Developers
+
+<details>
+<summary><strong>API Reference</strong> -- click to expand</summary>
+
+### Manual Usage
+
+If you prefer to write the script by hand, use the `NoteBuilder` API directly:
 
 ```python
 from note_generator import NoteBuilder
@@ -102,14 +127,6 @@ nb = NoteBuilder(
     semester="Fall 2025"
 )
 
-nb.add_title_page(
-    subtitle="Exceptions to the Rule Against Hearsay",
-    page_ref="Casebook pp. 400-430 | FRE 803, 804",
-    toc_data=[["A", "Present Sense Impression", "What makes it reliable?"]],
-    why_title="Why You're Reading These Cases",
-    why_text="<b>Big Picture.</b> This unit covers ..."
-)
-
 nb.add_section("A. Present Sense Impression")
 nb.add_text("Under FRE 803(1), a statement describing an event ...")
 
@@ -117,10 +134,8 @@ nb.add_case_brief(
     "Crawford v. Washington",
     "541 U.S. 36 (2004) -- Scalia, J.",
     [
-        ("Posture.", "Defendant's wife made statements to police ..."),
         ("Holding.", "Testimonial statements require confrontation ..."),
         ("Reasoning.", [
-            "The Confrontation Clause bars admission of testimonial hearsay unless the declarant is unavailable and was previously cross-examined.",
             "The Roberts reliability test gave courts too much discretion.",
         ]),
     ]
@@ -128,34 +143,18 @@ nb.add_case_brief(
 
 nb.add_cold_call("COLD-CALL POINTS -- Crawford", [
     ("What did Crawford change?", [
-        "Replaced the Roberts reliability test with a bright-line rule.",
+        "Replaced Roberts with a bright-line confrontation rule.",
     ]),
 ])
 
-nb.add_problem("8.1", "The Neighbor's Account",
-    "A neighbor told police she saw the defendant leave the house carrying a bag.",
-    "Is the neighbor's statement admissible after Crawford?",
-    [
-        "NO -- testimonial statement, no prior cross-examination.",
-        "Must be excluded regardless of reliability.",
-    ]
-)
-
 nb.add_confidence_score([
-    ["Crawford", "95%", "Strong coverage."],
     ["OVERALL", "93%", "Review forfeiture-by-wrongdoing."],
 ])
 
 nb.build()
 ```
 
-```bash
-python my_notes.py
-```
-
----
-
-## API Reference
+### Methods
 
 | Method | Description |
 |---|---|
@@ -164,26 +163,29 @@ python my_notes.py
 | `.add_section(title)` | Maroon section header with bookmark |
 | `.add_subsection(title)` | Teal subsection header with bookmark |
 | `.add_text(text)` | Body paragraph (supports `<b>`, `<i>` HTML) |
-| `.add_case_brief(title, citation, fields)` | Bordered case brief; `fields` = list of `(label, content_or_bullet_list)` |
-| `.add_cold_call(title, qa_pairs)` | Cold-call Q&A box; `qa_pairs` = list of `(question, [answer_bullets])` |
+| `.add_case_brief(title, citation, fields)` | Bordered case brief box |
+| `.add_cold_call(title, qa_pairs)` | Cold-call Q&A box |
 | `.add_problem(number, title, facts, question, answer_bullets)` | Problem with answer |
 | `.add_table(headers, rows, col_widths=None)` | Colored info table |
 | `.add_rule_box(rule_title, rule_text_parts)` | Styled rule/statute box |
 | `.add_info_box(title, text)` | Bordered info box |
-| `.add_confidence_score(rows)` | Confidence score table; `rows` = `[component, score, notes]` |
-| `.add_page_break()` | Insert page break |
+| `.add_confidence_score(rows)` | Confidence score table |
+| `.add_page_break()` | Page break |
 | `.add_spacer(height=6)` | Vertical spacer |
-| `.build()` | Build the PDF with bookmarks; returns output path |
+| `.build()` | Build the PDF with bookmarks |
 
-All `add_*` methods return `self` for fluent chaining:
+All methods return `self` for chaining: `nb.add_section("A").add_text("...").add_page_break()`
 
-```python
-nb.add_section("A. Intro").add_text("...").add_page_break()
-```
+### Font Configuration
 
----
+Palatino is auto-detected in this order:
+1. `NOTE_GEN_FONT_PATH` environment variable
+2. macOS: `/System/Library/Fonts/Palatino.ttc`
+3. Linux: `/usr/share/fonts/truetype/Palatino.ttc` and common alternatives
+4. Windows: `C:\Windows\Fonts\pala.ttf`
+5. Fallback: Times-Roman (built into ReportLab)
 
-## Colors
+### Colors
 
 | Name | Hex | Usage |
 |---|---|---|
@@ -193,18 +195,18 @@ nb.add_section("A. Intro").add_text("...").add_page_break()
 | Cream | `#FDF8F0` | Case brief backgrounds |
 | Teal Light | `#E8F4F2` | Alternating table rows |
 
-Access them programmatically:
-
 ```python
 from note_generator import COLORS
 print(COLORS["NAVY"])  # HexColor('#1B2A4A')
 ```
 
+</details>
+
 ---
 
 ## Contributing
 
-PRs welcome. If you add a new component (e.g., `add_flowchart()`, `add_timeline()`), follow the existing pattern: return a ReportLab `Flowable`, accept an optional `content_w` parameter, and add a corresponding `NoteBuilder` method that appends it to the story.
+PRs welcome. If you add a new component, follow the existing pattern: return a ReportLab `Flowable`, accept an optional `content_w` parameter, and add a corresponding `NoteBuilder` method.
 
 ## License
 
