@@ -95,7 +95,7 @@ No font configuration is required. It just works.
 
 ### Before each class (~5 minutes)
 
-**1. Open your AI tool.** Pick whichever you have access to:
+**1. Open your AI tool.** Pick whichever you have access to (see [CLI workflows](#using-the-cli-claude-code-or-codex) below if you're using the terminal):
 
 <table>
 <tr><th colspan="2">Claude</th></tr>
@@ -104,7 +104,7 @@ No font configuration is required. It just works.
 <tr><td><strong>Claude Code in VS Code / JetBrains</strong></td><td>Install the Claude Code extension from the marketplace</td></tr>
 <tr><th colspan="2">ChatGPT</th></tr>
 <tr><td><strong>ChatGPT with Code Interpreter</strong></td><td>Use <a href="https://chat.openai.com">chat.openai.com</a> (Plus/Team/Enterprise). Upload <code>note_generator.py</code> alongside your reading.</td></tr>
-<tr><td><strong>Codex</strong></td><td>Use the Codex agent in ChatGPT or via the API</td></tr>
+<tr><td><strong>Codex CLI</strong></td><td>Install via <code>npm install -g @openai/codex</code>, then run <code>codex</code> in Terminal. See <a href="#using-the-cli-claude-code-or-codex">CLI workflow</a>.</td></tr>
 <tr><th colspan="2">Gemini</th></tr>
 <tr><td><strong>Gemini Advanced</strong></td><td>Use <a href="https://gemini.google.com">gemini.google.com</a> (requires Google One AI Premium). Upload <code>note_generator.py</code> alongside your reading.</td></tr>
 <tr><td><strong>Google AI Studio</strong></td><td>Use <a href="https://aistudio.google.com">aistudio.google.com</a> (free). Has built-in code execution.</td></tr>
@@ -131,7 +131,7 @@ Delete the `[PALATINO FONT PATH]` line entirely -- it auto-detects.
 **5. Send it.** The AI reads your casebook pages, analyzes every case and problem, and writes a Python script that generates the PDF.
 
 **6. Run it.**
-- **Claude Code** (CLI, VS Code, JetBrains) -- runs automatically.
+- **Claude Code / Codex CLI** -- runs automatically. PDF saved to your current folder.
 - **ChatGPT Code Interpreter / Gemini** -- runs automatically. Download the PDF from the chat.
 - **Everyone else** -- copy the generated script, save it as `notes.py`, and run it yourself:
 
@@ -140,6 +140,111 @@ python notes.py
 ```
 
 **7. Open the PDF.** You're ready for class.
+
+---
+
+### Using the CLI (Claude Code or Codex)
+
+Both Claude Code and OpenAI Codex are terminal-based AI tools that can read files directly from your machine -- no uploading needed. The workflow is nearly identical for both.
+
+#### Install
+
+| Tool | Install command | Run command |
+|---|---|---|
+| **Claude Code** | `npm install -g @anthropic-ai/claude-code` | `claude` |
+| **Codex CLI** | `npm install -g @openai/codex` | `codex` |
+
+Both require [Node.js](https://nodejs.org/) (which includes `npm`). If you don't have Node, download the LTS version from [nodejs.org](https://nodejs.org/).
+
+#### Step-by-step
+
+**1. Open Terminal and `cd` into the repo folder.**
+
+```bash
+# Mac / Linux
+cd ~/cold-call-ready
+
+# Windows (Command Prompt)
+cd %USERPROFILE%\cold-call-ready
+
+# Windows (PowerShell)
+cd ~\cold-call-ready
+```
+
+If you cloned somewhere else, use that path instead. The key is that `note_generator.py` must be in your current directory.
+
+**2. Start the CLI.**
+
+```bash
+claude          # if using Claude Code
+codex           # if using Codex
+```
+
+**3. Reference your reading by file path.**
+
+Instead of uploading a PDF, tell the AI where the file is. In the prompt, replace `[PAGES/FILE DESCRIPTION]` with the file path:
+
+```
+# If the reading is in the same folder:
+I have uploaded reading.pdf for my Evidence class.
+
+# If the reading is somewhere else, use the full path:
+I have uploaded /Users/yourname/Documents/Evidence/Chapter12.pdf for my Evidence class.
+
+# On Mac with spaces in the path, just write it naturally:
+I have uploaded ~/Documents/Spring 2026/Evidence/pp747-755.pdf for my Evidence class.
+
+# On Windows:
+I have uploaded C:\Users\yourname\Documents\Evidence\Chapter12.pdf for my Evidence class.
+```
+
+> **Tip:** You can drag a file from Finder (Mac) or File Explorer (Windows) into the terminal window to paste its full path automatically.
+
+**4. Paste the rest of the prompt as normal** -- the Master Prompt from `PROMPT_TEMPLATE.md` with your `[CLASS NAME]` and `[CLASS-SPECIFIC INSTRUCTIONS]` filled in.
+
+**5. The AI reads the file, writes the script, and runs it automatically.** The PDF appears in your current directory. No copy-pasting scripts or manual `python` commands needed.
+
+<details>
+<summary><strong>Example: full Claude Code session</strong></summary>
+
+```bash
+$ cd ~/cold-call-ready
+$ claude
+
+> I have uploaded ~/Documents/Evidence/pp747-755.pdf for my Evidence class.
+>
+> === READING & ANALYSIS ORDER ===
+> [... rest of the Master Prompt ...]
+>
+> === CLASS-SPECIFIC: EVIDENCE ===
+> [... Evidence block from PROMPT_TEMPLATE.md ...]
+
+# Claude reads the PDF, writes the script, runs it, and saves the PDF.
+# You'll see something like:
+# ✓ Created "Evidence - Hearsay Exceptions pp. 747-755.pdf"
+```
+
+</details>
+
+<details>
+<summary><strong>Example: full Codex session</strong></summary>
+
+```bash
+$ cd ~/cold-call-ready
+$ codex
+
+> I have uploaded ~/Documents/Evidence/pp747-755.pdf for my Evidence class.
+>
+> === READING & ANALYSIS ORDER ===
+> [... rest of the Master Prompt ...]
+>
+> === CLASS-SPECIFIC: EVIDENCE ===
+> [... Evidence block from PROMPT_TEMPLATE.md ...]
+
+# Codex reads the PDF, writes the script, runs it, and saves the PDF.
+```
+
+</details>
 
 ---
 
