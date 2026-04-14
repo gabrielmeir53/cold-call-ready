@@ -7,11 +7,12 @@
 [![No Coding Required](https://img.shields.io/badge/coding-not%20required-brightgreen)](#how-to-use-it)
 [![Works with Claude](https://img.shields.io/badge/works%20with-Claude-D97757?logo=anthropic&logoColor=white)](https://claude.ai)
 [![Works with ChatGPT](https://img.shields.io/badge/works%20with-ChatGPT-74AA9C?logo=openai&logoColor=white)](https://chat.openai.com)
+[![Works with Gemini](https://img.shields.io/badge/works%20with-Gemini-4285F4?logo=googlegemini&logoColor=white)](https://gemini.google.com)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](https://github.com/gabrielmeir53/cold-call-ready/pulls)
 
 **Never get caught flat-footed in class again.**
 
-Upload your casebook reading to Claude or ChatGPT. Paste a prompt. Get a polished, color-coded PDF with every case briefed, every problem answered, and cold-call Q&A boxes telling you exactly what to say when the professor points at you.
+Upload your casebook reading to Claude, ChatGPT, or Gemini. Paste a prompt. Get a polished, color-coded PDF with every case briefed, every problem answered, and cold-call Q&A boxes telling you exactly what to say when the professor points at you.
 
 No coding required. Built for law school.
 
@@ -104,11 +105,14 @@ No font configuration is required. It just works.
 <tr><th colspan="2">ChatGPT</th></tr>
 <tr><td><strong>ChatGPT with Code Interpreter</strong></td><td>Use <a href="https://chat.openai.com">chat.openai.com</a> (Plus/Team/Enterprise). Upload <code>note_generator.py</code> alongside your reading.</td></tr>
 <tr><td><strong>Codex</strong></td><td>Use the Codex agent in ChatGPT or via the API</td></tr>
+<tr><th colspan="2">Gemini</th></tr>
+<tr><td><strong>Gemini Advanced</strong></td><td>Use <a href="https://gemini.google.com">gemini.google.com</a> (requires Google One AI Premium). Upload <code>note_generator.py</code> alongside your reading.</td></tr>
+<tr><td><strong>Google AI Studio</strong></td><td>Use <a href="https://aistudio.google.com">aistudio.google.com</a> (free). Has built-in code execution.</td></tr>
 </table>
 
-> **ChatGPT users:** You must upload `note_generator.py` from this repo into the chat along with your reading, since ChatGPT's sandbox doesn't have access to your local files. The AI will generate a PDF you can download directly from the chat.
+> **ChatGPT / Gemini users:** You must upload `note_generator.py` from this repo into the chat along with your reading, since the AI's sandbox doesn't have access to your local files. The AI will generate a PDF you can download directly from the chat.
 
-> **Web-only users:** Both [claude.ai](https://claude.ai) and [chat.openai.com](https://chat.openai.com) can analyze your reading and write the script, but the browser versions may not run Python. Copy the generated script, save it as `notes.py`, and run it yourself in Terminal.
+> **Web-only users:** [claude.ai](https://claude.ai), [chat.openai.com](https://chat.openai.com), and [gemini.google.com](https://gemini.google.com) can all analyze your reading and write the script, but the browser versions may not run Python. Copy the generated script, save it as `notes.py`, and run it yourself in Terminal.
 
 **2. Upload your reading.** Attach the PDF of the casebook pages your professor assigned.
 
@@ -128,7 +132,7 @@ Delete the `[PALATINO FONT PATH]` line entirely -- it auto-detects.
 
 **6. Run it.**
 - **Claude Code** (CLI, VS Code, JetBrains) -- runs automatically.
-- **ChatGPT Code Interpreter** -- runs automatically. Download the PDF from the chat.
+- **ChatGPT Code Interpreter / Gemini** -- runs automatically. Download the PDF from the chat.
 - **Everyone else** -- copy the generated script, save it as `notes.py`, and run it yourself:
 
 ```bash
@@ -170,11 +174,14 @@ Ask the AI to adjust anything -- colors, layout, content. Or see the [API Refere
 **Does it work with ChatGPT?**
 Yes. Use ChatGPT with Code Interpreter (requires Plus, Team, or Enterprise). Upload `note_generator.py` and your reading together, paste the prompt, and it generates the PDF in the sandbox. You download it straight from the chat.
 
-**Claude or ChatGPT -- which is better?**
-Both work. Claude Code is the smoothest experience because it runs locally and saves the PDF to your machine automatically. ChatGPT Code Interpreter is convenient if you already have a Plus subscription -- just download the PDF when it's done.
+**Does it work with Gemini?**
+Yes. Use Gemini Advanced or Google AI Studio. Same workflow -- upload `note_generator.py` and your reading, paste the prompt. AI Studio is free and has built-in code execution.
+
+**Which AI is best?**
+All three work. Claude Code is the smoothest because it runs locally and saves the PDF to your machine automatically. ChatGPT and Gemini are convenient if you already have a subscription -- just download the PDF when it's done. Use whichever you have access to.
 
 **How much does it cost?**
-This repo is free (MIT license). You need a Claude or ChatGPT account to use the AI workflow.
+This repo is free (MIT license). You need a Claude, ChatGPT, or Gemini account to use the AI workflow.
 
 ---
 
@@ -198,8 +205,8 @@ The script probably errored silently. Run it in Terminal/Command Prompt directly
 **Content is split across pages**
 This shouldn't happen -- `KeepTogether` prevents it. If it does, ask the AI to wrap the offending section in a `KeepTogether` block, or reduce the content length so it fits on one page.
 
-**ChatGPT says it can't find `note_generator.py`**
-You need to upload `note_generator.py` into the chat alongside your reading. ChatGPT's sandbox can't access files on your computer.
+**ChatGPT / Gemini says it can't find `note_generator.py`**
+You need to upload `note_generator.py` into the chat alongside your reading. The AI's sandbox can't access files on your computer.
 
 **"WARNING: Palatino font not found -- using Times as fallback"**
 Not an error -- just informational. Your PDF will use Times instead of Palatino. To suppress: install Palatino or set `NOTE_GEN_FONT_PATH` to your font file.
