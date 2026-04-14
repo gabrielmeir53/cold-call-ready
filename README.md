@@ -30,21 +30,38 @@ All in Palatino on letter-sized pages. Nothing splits awkwardly across pages.
 
 **1. Make sure you have Python.**
 
-On a Mac, open Terminal and type `python3 --version`. If you see a version number, you're good. If not, [install Python](https://www.python.org/downloads/).
+<table>
+<tr><td><strong>Mac</strong></td><td>Open <strong>Terminal</strong> and type <code>python3 --version</code>. If you see a version number, you're good.</td></tr>
+<tr><td><strong>Windows</strong></td><td>Open <strong>Command Prompt</strong> or <strong>PowerShell</strong> and type <code>python --version</code>. If you see a version number, you're good.</td></tr>
+</table>
+
+If Python isn't installed, download it from [python.org/downloads](https://www.python.org/downloads/). **Windows users:** check "Add Python to PATH" during installation.
 
 **2. Install one library.**
 
 ```bash
-pip3 install reportlab
+pip install reportlab
 ```
+
+(On Mac, use `pip3` if `pip` doesn't work.)
 
 **3. Download this repo.**
 
+If you have Git installed:
 ```bash
 git clone https://github.com/gabrielmeir53/cold-call-ready.git
 ```
 
-That's it. The font (Palatino) is already on your Mac. On Windows or Linux it auto-detects or falls back to Times automatically.
+If you don't have Git: click the green **Code** button at the top of [this page](https://github.com/gabrielmeir53/cold-call-ready), then **Download ZIP**. Unzip it wherever you like.
+
+**4. Font (automatic).**
+
+Palatino is auto-detected on your system:
+- **Mac** -- already installed at `/System/Library/Fonts/Palatino.ttc`. Nothing to do.
+- **Windows** -- auto-detected if Palatino is in `C:\Windows\Fonts`. If not installed, it falls back to **Times** automatically. Your notes will still look great.
+- **Linux** -- checks common font directories. Falls back to Times if not found.
+
+No font configuration is required. It just works.
 
 ---
 
