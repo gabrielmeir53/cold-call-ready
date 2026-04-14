@@ -89,7 +89,15 @@ No font configuration is required. It just works.
 
 ### Before each class (~5 minutes)
 
-**1. Open Claude** at [claude.ai](https://claude.ai).
+**1. Open Claude** using any version that can run code:
+
+| Option | How to get it |
+|---|---|
+| **Claude Desktop** (Mac/Windows) | [Download here](https://claude.ai/download) -- use the "Analysis" tool or Claude Code from within the app |
+| **Claude Code CLI** | Install via `npm install -g @anthropic-ai/claude-code`, then run `claude` in Terminal |
+| **Claude Code in VS Code / JetBrains** | Install the Claude Code extension from the marketplace |
+
+> **Note:** The Claude website ([claude.ai](https://claude.ai)) can analyze your reading and write the script, but it **cannot run Python**. You need one of the options above, or you can copy the script Claude generates and run it yourself in Terminal.
 
 **2. Upload your reading.** Attach the PDF of the casebook pages your professor assigned.
 
@@ -107,7 +115,11 @@ Delete the `[PALATINO FONT PATH]` line entirely -- it auto-detects.
 
 **5. Send it.** Claude reads your casebook pages, analyzes every case and problem, and writes a Python script that generates the PDF.
 
-**6. Say "Run it."** Claude runs the script. A PDF appears.
+**6. Run it.** If you're using Claude Code (CLI, VS Code, or JetBrains), it runs automatically. If you're using Claude Desktop or the website, copy the script Claude generates, save it as `notes.py`, and run it yourself:
+
+```bash
+python notes.py
+```
 
 **7. Open the PDF.** You're ready for class.
 
