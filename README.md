@@ -1,8 +1,12 @@
 # cold-call-ready
 
-[![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
-[![ReportLab](https://img.shields.io/badge/requires-reportlab%20%E2%89%A54.0-green.svg)](https://pypi.org/project/reportlab/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-3776AB?logo=python&logoColor=white)](https://www.python.org/downloads/)
+[![ReportLab ≥4.0](https://img.shields.io/badge/reportlab-%E2%89%A54.0-4B8BBE)](https://pypi.org/project/reportlab/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![macOS · Windows · Linux](https://img.shields.io/badge/platform-macOS%20%C2%B7%20Windows%20%C2%B7%20Linux-lightgrey)](#one-time-setup-5-minutes)
+[![No Coding Required](https://img.shields.io/badge/coding-not%20required-brightgreen)](#how-to-use-it)
+[![Powered by Claude](https://img.shields.io/badge/powered%20by-Claude-D97757?logo=anthropic&logoColor=white)](https://claude.ai)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](https://github.com/gabrielmeir53/cold-call-ready/pulls)
 
 **Never get caught flat-footed in class again.**
 
