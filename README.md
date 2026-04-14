@@ -1,5 +1,9 @@
 # cold-call-ready
 
+[![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
+[![ReportLab](https://img.shields.io/badge/requires-reportlab%20%E2%89%A54.0-green.svg)](https://pypi.org/project/reportlab/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
+
 **Never get caught flat-footed in class again.**
 
 Upload your casebook reading to Claude. Paste a prompt. Get a polished, color-coded PDF with every case briefed, every problem answered, and cold-call Q&A boxes telling you exactly what to say when the professor points at you.
@@ -10,10 +14,28 @@ No coding required. Built for law school.
 
 ## What You Get
 
-A 20+ page PDF for each reading assignment with:
+A 20+ page PDF for each reading assignment:
+
+<p align="center">
+  <img src="assets/sample-title.png" alt="Title page with table of contents" width="380"/>
+  &nbsp;&nbsp;
+  <img src="assets/sample-case-brief.png" alt="Case brief with structured analysis" width="380"/>
+</p>
+<p align="center">
+  <em>Left: Title page with TOC and "Why You're Reading" box. Right: Full case brief with facts, holding, and reasoning.</em>
+</p>
+
+<p align="center">
+  <img src="assets/sample-cold-call.png" alt="Cold-call Q&A and problem answer" width="380"/>
+</p>
+<p align="center">
+  <em>Cold-call Q&A box with professor questions and bullet-point answers you can say out loud.</em>
+</p>
+
+Every PDF includes:
 
 - **Case briefs** -- facts, holding, reasoning, key quotes, all in a styled box
-- **Cold-call Q&A** -- "What did the court hold?" with bullet-point answers you can say out loud
+- **Cold-call Q&A** -- likely professor questions with bullet-point answers ready to recite
 - **Problem answers** -- every textbook question answered with talking points
 - **Rule text** -- FRE rules, statutes, constitutional provisions in highlighted boxes
 - **Comparison tables** -- majority vs. dissent, old rule vs. new rule, element breakdowns
@@ -117,10 +139,35 @@ Yes. Python + ReportLab work on Windows. The font auto-detects Palatino if insta
 Yes. The components (case briefs, tables, Q&A boxes) work for any subject. Write your own class-specific instruction block.
 
 **What if I want to tweak the output?**
-You can ask Claude to adjust anything -- colors, layout, content. Or see the [API Reference](#api-reference) below to write scripts by hand.
+You can ask Claude to adjust anything -- colors, layout, content. Or see the [API Reference](#for-developers) below to write scripts by hand.
 
 **How much does it cost?**
 This repo is free (MIT license). You need a Claude account to use the AI workflow.
+
+---
+
+## Troubleshooting
+
+**"ModuleNotFoundError: No module named 'reportlab'"**
+You haven't installed the library yet. Run `pip install reportlab` (or `pip3 install reportlab` on Mac).
+
+**"No such file or directory" when running the script**
+Make sure the script and `note_generator.py` are in the same folder. If you downloaded the ZIP, `cd` into the unzipped folder first.
+
+**The PDF has wrong fonts / looks different than the screenshots**
+Palatino wasn't found on your system, so it fell back to Times. This is fine -- Times still looks professional. If you want Palatino on Windows, install it from a font provider or copy `Palatino.ttc` from a Mac.
+
+**Claude generated a script but it errors out**
+Ask Claude to fix it -- paste the error message back into the chat. Common causes: a typo in the generated script, or a ReportLab version mismatch. Make sure you have `reportlab >= 4.0` (`pip install --upgrade reportlab`).
+
+**The PDF is blank or has only one page**
+The script probably errored silently. Run it in Terminal/Command Prompt directly (`python my_notes.py`) instead of through Claude to see the full error output.
+
+**Content is split across pages**
+This shouldn't happen -- `KeepTogether` prevents it. If it does, ask Claude to wrap the offending section in a `KeepTogether` block, or reduce the content length so it fits on one page.
+
+**"WARNING: Palatino font not found -- using Times as fallback"**
+Not an error -- just informational. Your PDF will use Times instead of Palatino. To suppress: install Palatino or set `NOTE_GEN_FONT_PATH` to your font file.
 
 ---
 
