@@ -5,12 +5,13 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![macOS · Windows · Linux](https://img.shields.io/badge/platform-macOS%20%C2%B7%20Windows%20%C2%B7%20Linux-lightgrey)](#one-time-setup-5-minutes)
 [![No Coding Required](https://img.shields.io/badge/coding-not%20required-brightgreen)](#how-to-use-it)
-[![Powered by Claude](https://img.shields.io/badge/powered%20by-Claude-D97757?logo=anthropic&logoColor=white)](https://claude.ai)
+[![Works with Claude](https://img.shields.io/badge/works%20with-Claude-D97757?logo=anthropic&logoColor=white)](https://claude.ai)
+[![Works with ChatGPT](https://img.shields.io/badge/works%20with-ChatGPT-74AA9C?logo=openai&logoColor=white)](https://chat.openai.com)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](https://github.com/gabrielmeir53/cold-call-ready/pulls)
 
 **Never get caught flat-footed in class again.**
 
-Upload your casebook reading to Claude. Paste a prompt. Get a polished, color-coded PDF with every case briefed, every problem answered, and cold-call Q&A boxes telling you exactly what to say when the professor points at you.
+Upload your casebook reading to Claude or ChatGPT. Paste a prompt. Get a polished, color-coded PDF with every case briefed, every problem answered, and cold-call Q&A boxes telling you exactly what to say when the professor points at you.
 
 No coding required. Built for law school.
 
@@ -93,21 +94,27 @@ No font configuration is required. It just works.
 
 ### Before each class (~5 minutes)
 
-**1. Open Claude** using any version that can run code:
+**1. Open your AI tool.** Pick whichever you have access to:
 
-| Option | How to get it |
-|---|---|
-| **Claude Desktop** (Mac/Windows) | [Download here](https://claude.ai/download) -- use the "Analysis" tool or Claude Code from within the app |
-| **Claude Code CLI** | Install via `npm install -g @anthropic-ai/claude-code`, then run `claude` in Terminal |
-| **Claude Code in VS Code / JetBrains** | Install the Claude Code extension from the marketplace |
+<table>
+<tr><th colspan="2">Claude</th></tr>
+<tr><td><strong>Claude Desktop</strong> (Mac/Windows)</td><td><a href="https://claude.ai/download">Download here</a> -- use the "Analysis" tool or Claude Code from within the app</td></tr>
+<tr><td><strong>Claude Code CLI</strong></td><td>Install via <code>npm install -g @anthropic-ai/claude-code</code>, then run <code>claude</code> in Terminal</td></tr>
+<tr><td><strong>Claude Code in VS Code / JetBrains</strong></td><td>Install the Claude Code extension from the marketplace</td></tr>
+<tr><th colspan="2">ChatGPT</th></tr>
+<tr><td><strong>ChatGPT with Code Interpreter</strong></td><td>Use <a href="https://chat.openai.com">chat.openai.com</a> (Plus/Team/Enterprise). Upload <code>note_generator.py</code> alongside your reading.</td></tr>
+<tr><td><strong>Codex</strong></td><td>Use the Codex agent in ChatGPT or via the API</td></tr>
+</table>
 
-> **Note:** The Claude website ([claude.ai](https://claude.ai)) can analyze your reading and write the script, but it **cannot run Python**. You need one of the options above, or you can copy the script Claude generates and run it yourself in Terminal.
+> **ChatGPT users:** You must upload `note_generator.py` from this repo into the chat along with your reading, since ChatGPT's sandbox doesn't have access to your local files. The AI will generate a PDF you can download directly from the chat.
+
+> **Web-only users:** Both [claude.ai](https://claude.ai) and [chat.openai.com](https://chat.openai.com) can analyze your reading and write the script, but the browser versions may not run Python. Copy the generated script, save it as `notes.py`, and run it yourself in Terminal.
 
 **2. Upload your reading.** Attach the PDF of the casebook pages your professor assigned.
 
 **3. Open `PROMPT_TEMPLATE.md`** from the repo you downloaded. Copy everything under **"Master Prompt"** (the big block inside the triple backticks).
 
-**4. Paste it into Claude.** Replace three things:
+**4. Paste it into the chat.** Replace three things:
 
 | Replace this | With this |
 |---|---|
@@ -117,9 +124,12 @@ No font configuration is required. It just works.
 
 Delete the `[PALATINO FONT PATH]` line entirely -- it auto-detects.
 
-**5. Send it.** Claude reads your casebook pages, analyzes every case and problem, and writes a Python script that generates the PDF.
+**5. Send it.** The AI reads your casebook pages, analyzes every case and problem, and writes a Python script that generates the PDF.
 
-**6. Run it.** If you're using Claude Code (CLI, VS Code, or JetBrains), it runs automatically. If you're using Claude Desktop or the website, copy the script Claude generates, save it as `notes.py`, and run it yourself:
+**6. Run it.**
+- **Claude Code** (CLI, VS Code, JetBrains) -- runs automatically.
+- **ChatGPT Code Interpreter** -- runs automatically. Download the PDF from the chat.
+- **Everyone else** -- copy the generated script, save it as `notes.py`, and run it yourself:
 
 ```bash
 python notes.py
@@ -146,7 +156,7 @@ At the bottom of `PROMPT_TEMPLATE.md`, there are pre-built instruction blocks yo
 ## FAQ
 
 **Do I need to know Python?**
-No. Claude writes and runs the script for you. You just paste a prompt.
+No. The AI writes and runs the script for you. You just paste a prompt.
 
 **Does it work on Windows?**
 Yes. Python + ReportLab work on Windows. The font auto-detects Palatino if installed, otherwise falls back to Times.
@@ -155,10 +165,16 @@ Yes. Python + ReportLab work on Windows. The font auto-detects Palatino if insta
 Yes. The components (case briefs, tables, Q&A boxes) work for any subject. Write your own class-specific instruction block.
 
 **What if I want to tweak the output?**
-You can ask Claude to adjust anything -- colors, layout, content. Or see the [API Reference](#for-developers) below to write scripts by hand.
+Ask the AI to adjust anything -- colors, layout, content. Or see the [API Reference](#for-developers) below to write scripts by hand.
+
+**Does it work with ChatGPT?**
+Yes. Use ChatGPT with Code Interpreter (requires Plus, Team, or Enterprise). Upload `note_generator.py` and your reading together, paste the prompt, and it generates the PDF in the sandbox. You download it straight from the chat.
+
+**Claude or ChatGPT -- which is better?**
+Both work. Claude Code is the smoothest experience because it runs locally and saves the PDF to your machine automatically. ChatGPT Code Interpreter is convenient if you already have a Plus subscription -- just download the PDF when it's done.
 
 **How much does it cost?**
-This repo is free (MIT license). You need a Claude account to use the AI workflow.
+This repo is free (MIT license). You need a Claude or ChatGPT account to use the AI workflow.
 
 ---
 
@@ -173,14 +189,17 @@ Make sure the script and `note_generator.py` are in the same folder. If you down
 **The PDF has wrong fonts / looks different than the screenshots**
 Palatino wasn't found on your system, so it fell back to Times. This is fine -- Times still looks professional. If you want Palatino on Windows, install it from a font provider or copy `Palatino.ttc` from a Mac.
 
-**Claude generated a script but it errors out**
-Ask Claude to fix it -- paste the error message back into the chat. Common causes: a typo in the generated script, or a ReportLab version mismatch. Make sure you have `reportlab >= 4.0` (`pip install --upgrade reportlab`).
+**The generated script errors out**
+Paste the error message back into the chat and ask the AI to fix it. Common causes: a typo in the generated script, or a ReportLab version mismatch. Make sure you have `reportlab >= 4.0` (`pip install --upgrade reportlab`).
 
 **The PDF is blank or has only one page**
-The script probably errored silently. Run it in Terminal/Command Prompt directly (`python my_notes.py`) instead of through Claude to see the full error output.
+The script probably errored silently. Run it in Terminal/Command Prompt directly (`python my_notes.py`) to see the full error output.
 
 **Content is split across pages**
-This shouldn't happen -- `KeepTogether` prevents it. If it does, ask Claude to wrap the offending section in a `KeepTogether` block, or reduce the content length so it fits on one page.
+This shouldn't happen -- `KeepTogether` prevents it. If it does, ask the AI to wrap the offending section in a `KeepTogether` block, or reduce the content length so it fits on one page.
+
+**ChatGPT says it can't find `note_generator.py`**
+You need to upload `note_generator.py` into the chat alongside your reading. ChatGPT's sandbox can't access files on your computer.
 
 **"WARNING: Palatino font not found -- using Times as fallback"**
 Not an error -- just informational. Your PDF will use Times instead of Palatino. To suppress: install Palatino or set `NOTE_GEN_FONT_PATH` to your font file.
