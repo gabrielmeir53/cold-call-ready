@@ -6,7 +6,7 @@
 [![macOS · Windows · Linux](https://img.shields.io/badge/platform-macOS%20%C2%B7%20Windows%20%C2%B7%20Linux-lightgrey)](#one-time-setup-5-minutes)
 [![No Coding Required](https://img.shields.io/badge/coding-not%20required-brightgreen)](#how-to-use-it)
 [![Works with Claude](https://img.shields.io/badge/works%20with-Claude-D97757?logo=anthropic&logoColor=white)](https://claude.ai)
-[![Works with ChatGPT](https://img.shields.io/badge/works%20with-ChatGPT-74AA9C?logo=openai&logoColor=white)](https://chat.openai.com)
+[![Works with ChatGPT](https://img.shields.io/badge/works%20with-ChatGPT-74AA9C?logo=openai&logoColor=white)](https://chatgpt.com)
 [![Works with Gemini](https://img.shields.io/badge/works%20with-Gemini-4285F4?logo=googlegemini&logoColor=white)](https://gemini.google.com)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](https://github.com/gabrielmeir53/cold-call-ready/pulls)
 
@@ -103,8 +103,8 @@ No font configuration is required. It just works.
 <tr><td><strong>Claude Code CLI</strong></td><td>Install via <code>npm install -g @anthropic-ai/claude-code</code>, then run <code>claude</code> in Terminal</td></tr>
 <tr><td><strong>Claude Code in VS Code / JetBrains</strong></td><td>Install the Claude Code extension from the marketplace</td></tr>
 <tr><th colspan="2">ChatGPT</th></tr>
-<tr><td><strong>ChatGPT with Code Interpreter</strong></td><td>Use <a href="https://chat.openai.com">chat.openai.com</a> (Plus/Team/Enterprise). Upload <code>note_generator.py</code> alongside your reading.</td></tr>
-<tr><td><strong>Codex CLI</strong></td><td>Install via <code>npm install -g @openai/codex</code>, then run <code>codex</code> in Terminal. See <a href="#using-the-cli-claude-code-or-codex">CLI workflow</a>.</td></tr>
+<tr><td><strong>ChatGPT with data analysis</strong></td><td>Use <a href="https://chatgpt.com">chatgpt.com</a>. Upload <code>note_generator.py</code> alongside your reading so ChatGPT's code execution environment can run the script in-chat.</td></tr>
+<tr><td><strong>Codex CLI</strong></td><td>Install via <code>npm install -g @openai/codex</code>, then run <code>codex</code> and sign in with ChatGPT when prompted. See <a href="#using-the-cli-claude-code-or-codex">CLI workflow</a>.</td></tr>
 <tr><th colspan="2">Gemini</th></tr>
 <tr><td><strong>Gemini Advanced</strong></td><td>Use <a href="https://gemini.google.com">gemini.google.com</a> (requires Google One AI Premium). Upload <code>note_generator.py</code> alongside your reading.</td></tr>
 <tr><td><strong>Google AI Studio</strong></td><td>Use <a href="https://aistudio.google.com">aistudio.google.com</a> (free). Has built-in code execution.</td></tr>
@@ -112,7 +112,7 @@ No font configuration is required. It just works.
 
 > **ChatGPT / Gemini users:** You must upload `note_generator.py` from this repo into the chat along with your reading, since the AI's sandbox doesn't have access to your local files. The AI will generate a PDF you can download directly from the chat.
 
-> **Web-only users:** [claude.ai](https://claude.ai), [chat.openai.com](https://chat.openai.com), and [gemini.google.com](https://gemini.google.com) can all analyze your reading and write the script, but the browser versions may not run Python. Copy the generated script, save it as `notes.py`, and run it yourself in Terminal.
+> **Web-only users:** ChatGPT's data analysis mode can usually run the script in-chat. Claude web and some Gemini surfaces may stop at writing the script; if that happens, copy the generated script, save it as `notes.py`, and run it yourself in Terminal.
 
 **2. Upload your reading.** Attach the PDF of the casebook pages your professor assigned.
 
@@ -126,13 +126,11 @@ No font configuration is required. It just works.
 | `[PAGES/FILE DESCRIPTION]` | What you uploaded -- e.g., `the attached PDF, pp. 747-755` |
 | `[CLASS-SPECIFIC INSTRUCTIONS]` | A block from the bottom of `PROMPT_TEMPLATE.md` for your class *(optional but recommended)* |
 
-Delete the `[PALATINO FONT PATH]` line entirely -- it auto-detects.
-
 **5. Send it.** The AI reads your casebook pages, analyzes every case and problem, and writes a Python script that generates the PDF.
 
 **6. Run it.**
 - **Claude Code / Codex CLI** -- runs automatically. PDF saved to your current folder.
-- **ChatGPT Code Interpreter / Gemini** -- runs automatically. Download the PDF from the chat.
+- **ChatGPT data analysis / Gemini code execution** -- runs automatically when that capability is available. Download the PDF from the chat.
 - **Everyone else** -- copy the generated script, save it as `notes.py`, and run it yourself:
 
 ```bash
@@ -155,6 +153,8 @@ Both Claude Code and OpenAI Codex are terminal-based AI tools that can read file
 | **Codex CLI** | `npm install -g @openai/codex` | `codex` |
 
 Both require [Node.js](https://nodejs.org/) (which includes `npm`). If you don't have Node, download the LTS version from [nodejs.org](https://nodejs.org/).
+
+For Codex specifically: the first time you run `codex`, sign in with your ChatGPT account or an API key. Native Windows support is still experimental, so WSL2 is the safest setup on Windows.
 
 #### Step-by-step
 
@@ -277,7 +277,7 @@ Yes. The components (case briefs, tables, Q&A boxes) work for any subject. Write
 Ask the AI to adjust anything -- colors, layout, content. Or see the [API Reference](#for-developers) below to write scripts by hand.
 
 **Does it work with ChatGPT?**
-Yes. Use ChatGPT with Code Interpreter (requires Plus, Team, or Enterprise). Upload `note_generator.py` and your reading together, paste the prompt, and it generates the PDF in the sandbox. You download it straight from the chat.
+Yes. Use ChatGPT with file uploads and data analysis enabled. Upload `note_generator.py` and your reading together, paste the prompt, and ChatGPT can generate the PDF inside its code execution environment for you to download from the chat.
 
 **Does it work with Gemini?**
 Yes. Use Gemini Advanced or Google AI Studio. Same workflow -- upload `note_generator.py` and your reading, paste the prompt. AI Studio is free and has built-in code execution.

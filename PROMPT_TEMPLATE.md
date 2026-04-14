@@ -2,12 +2,13 @@
 
 ## How to Use This Template
 
-1. **Upload your reading** (PDF or DOCX) to your AI tool (Claude, ChatGPT, etc.).
+1. **Provide your reading** to your AI tool.
+   - In ChatGPT or Gemini on the web: upload the reading and `note_generator.py`.
+   - In Codex or Claude Code: keep this repo in your current directory and reference the reading by file path.
 2. **Copy the Master Prompt below** into the chat.
 3. **Replace the `[BRACKETED PLACEHOLDERS]`** with your class-specific information:
    - `[CLASS NAME]` -- the name of your course (e.g., "Evidence", "Wills, Trusts & Estates")
    - `[PAGES/FILE DESCRIPTION]` -- what the reading covers (e.g., "pp. 747-755 of the casebook")
-   - `[PALATINO FONT PATH]` -- path to Palatino font file (default provided; only change if different)
    - `[CLASS-SPECIFIC INSTRUCTIONS]` -- optional block for class-specific emphasis (see examples at bottom)
 4. **Send the prompt.** The AI will generate a Python script that outputs a colorful, bookmarked PDF.
 5. After the AI generates the script, say: **"Run it."**
